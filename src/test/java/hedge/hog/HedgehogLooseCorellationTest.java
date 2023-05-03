@@ -27,8 +27,15 @@ public class HedgehogLooseCorellationTest {
             Garden garden = parser.parseTextFile("src/test/resources/input.txt");
             
             List<String> output = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
+            Path path = Paths.get("src/test/resources/logPathCorrelation.txt");
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+            
             HedgehogLooseCorellationAlgorythm hog = new HedgehogLooseCorellationAlgorythm();            
-            output.add("" + hog.go(garden, 1, 1,"src/test/resources/logPathCorrelation.txt"));
+            output.add("" + hog.go(garden, 1, 1, lines));
+            
+            Files.write(path, lines);
             Files.write(resultPath, output);
             System.out.println("Loose Corellation Algorythm result:" + 
                     output.parallelStream().map((String r) -> {
@@ -56,8 +63,15 @@ public class HedgehogLooseCorellationTest {
             Garden garden = parser.parseTextFile("src/test/resources/inputFewApples.txt");
             
             List<String> output = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
+            Path path = Paths.get("src/test/resources/logPathCorrelation_MANYAPPLES.txt");
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+            
             HedgehogLooseCorellationAlgorythm hog = new HedgehogLooseCorellationAlgorythm();            
-            output.add("" + hog.go(garden, 1, 1,"src/test/resources/logPathCorrelation_MANYAPPLES.txt"));
+            output.add("" + hog.go(garden, 1, 1, lines));
+            
+            Files.write(path, lines);
             Files.write(resultPath, output);
             System.out.println("Loose Corellation Algorythm_MANYAPPLES result:" + 
                     output.parallelStream().map((String r) -> {

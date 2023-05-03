@@ -1,52 +1,37 @@
 package hedge.hog;
 
 import hedge.entity.Garden;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class HedgehogAstarAlgorythm extends Hedgehog {
     @Override
-    public int go(Garden garden, int startPointX, int startPointY, String logPathFileLocation) {
+    public int go(Garden garden, int startPointX, int startPointY, List<String> logPathList) {
         int numberOfApples = 0;
-        try {
-            Path path = Paths.get(logPathFileLocation);
-            Files.deleteIfExists(path);
-            Files.createFile(path);
-            List<String> lines = new ArrayList<>();
-            
-            int x = startPointX;
-            int y = startPointY;
-            int xBorder = garden.getxTerritoryMetres();
-            int yBorder = garden.getyTerritoryMetres();
-            List<List<Integer>> trees = garden.getTrees();
-            
-            boolean goToTheRight = false;
-            while (x != xBorder || y != yBorder) {
-                numberOfApples = numberOfApples + garden.getApplesFromDefinedPoint(x, y);
-                byte advice = adviceAccordingToTheEuristicFunction(x, y, xBorder, yBorder, trees);
-                switch (advice) {
-                    case 1:  goToTheRight = true;
+        int x = startPointX;
+        int y = startPointY;
+        int xBorder = garden.getxTerritoryMetres();
+        int yBorder = garden.getyTerritoryMetres();
+        List<List<Integer>> trees = garden.getTrees();
+
+        boolean goToTheRight = false;
+        while (x != xBorder || y != yBorder) {
+            numberOfApples = numberOfApples + garden.getApplesFromDefinedPoint(x, y);
+            byte advice = adviceAccordingToTheEuristicFunction(x, y, xBorder, yBorder, trees);
+            switch (advice) {
+                case 1:
+                    goToTheRight = true;
                     break;
-                    case -1: goToTheRight = false;
-                }
-                if (!goToTheRight && y < yBorder) {
-                    y++;
-                } else if (x < xBorder) {
-                    x++;
-                }
-                lines.add(x + " " + y);
+                case -1:
+                    goToTheRight = false;
             }
-            Files.write(path, lines);
-        } catch (IOException ex) {
-            Logger.getLogger(RandomHedgehog.class.getName()).log(Level.SEVERE, null, ex);
+            if (!goToTheRight && y < yBorder) {
+                y++;
+            } else if (x < xBorder) {
+                x++;
+            }
+            logPathList.add(x + " " + y);
         }
         return numberOfApples;
     }

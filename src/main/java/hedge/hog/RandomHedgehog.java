@@ -1,6 +1,7 @@
 package hedge.hog;
 
 import hedge.entity.Garden;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Random;
  * @author andrew
  */
 public class RandomHedgehog extends Hedgehog {   
-    public int go(Garden garden, int startPointX, int startPointY, String logPathFileLocation) {
+    public int go(Garden garden, int startPointX, int startPointY, List<String> logPathList) {
         int numberOfApples = 0;
         int x = startPointX;
         int y = startPointY;

@@ -1,115 +1,98 @@
 package hedge.hog;
 
 import hedge.entity.Garden;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class HedgehogDeikstraBackwardAlgorythm extends Hedgehog {
     private LinkedList<Coordinates> disiredPathChange = new LinkedList<>();
     
     @Override
-    public int go(Garden garden, int startPointX, int startPointY, String logPathFileLocation) {
+    public int go(Garden garden, int startPointX, int startPointY, List<String> logPathList) {
         LinkedList<DeikstraStep> stepsRightDown = new LinkedList<>();
         LinkedList<DeikstraStep> stepsLeftUp = new LinkedList<>();
-        
+
         int result = 0;
-        try {
-            Path path = Paths.get(logPathFileLocation);
-            Files.deleteIfExists(path);
-            Files.createFile(path);
-            List<String> lines = new ArrayList<>();
-            
-            int x = startPointX;
-            int y = startPointY;
-            int xBorder = garden.getxTerritoryMetres();
-            int yBorder = garden.getyTerritoryMetres();
-            List<List<Integer>> trees = garden.getTrees();
-            
-            int numberOfApples = 0;
-            int backwardNumberOfApples = 0;
-            boolean goToTheRight = false;
-            lines.add("Downward");
-            
-            while (numberOfApples <= backwardNumberOfApples) {
-                numberOfApples = 0;
-                
-                while (x != xBorder || y != yBorder) {
-                    DeikstraStep downwardStep = new DeikstraStep(x, y, numberOfApples);                    
-                    numberOfApples = numberOfApples + garden.getApplesFromDefinedPoint(x, y);
-                    
-                    if (x == xBorder) {
-                        goToTheRight = false;
-                    } else if (y == yBorder) {
-                        goToTheRight = true;
-                    } else {
-                        short lastAdvice = changePathAccoridingDisiredTail(x, y);
-                        if (lastAdvice != 0) {
-                            if (lastAdvice == 1) {
-                                goToTheRight = true;
-                            } else {
-                                goToTheRight = false;
-                            }
-                        } else if (trees.get(y - 1).get(x) > trees.get(y).get(x - 1)) {
+        int x = startPointX;
+        int y = startPointY;
+        int xBorder = garden.getxTerritoryMetres();
+        int yBorder = garden.getyTerritoryMetres();
+        List<List<Integer>> trees = garden.getTrees();
+
+        int numberOfApples = 0;
+        int backwardNumberOfApples = 0;
+        boolean goToTheRight = false;
+        logPathList.add("Downward");
+
+        while (numberOfApples <= backwardNumberOfApples) {
+            numberOfApples = 0;
+
+            while (x != xBorder || y != yBorder) {
+                DeikstraStep downwardStep = new DeikstraStep(x, y, numberOfApples);
+                numberOfApples = numberOfApples + garden.getApplesFromDefinedPoint(x, y);
+
+                if (x == xBorder) {
+                    goToTheRight = false;
+                } else if (y == yBorder) {
+                    goToTheRight = true;
+                } else {
+                    short lastAdvice = changePathAccoridingDisiredTail(x, y);
+                    if (lastAdvice != 0) {
+                        if (lastAdvice == 1) {
                             goToTheRight = true;
                         } else {
                             goToTheRight = false;
                         }
+                    } else if (trees.get(y - 1).get(x) > trees.get(y).get(x - 1)) {
+                        goToTheRight = true;
+                    } else {
+                        goToTheRight = false;
                     }
-                    if (!goToTheRight && y < yBorder) {
-                        y++;
-                    } else if (x < xBorder) {
-                        x++;
-                    }
-                    lines.add(x + " " + y);
-                    downwardStep.setNextX(x);
-                    downwardStep.setNextY(y);
-                    downwardStep.setStepCost(garden.getApplesFromDefinedPoint(x, y));
-                    stepsRightDown.addLast(downwardStep);                    
                 }
+                if (!goToTheRight && y < yBorder) {
+                    y++;
+                } else if (x < xBorder) {
+                    x++;
+                }
+                logPathList.add(x + " " + y);
+                downwardStep.setNextX(x);
+                downwardStep.setNextY(y);
+                downwardStep.setStepCost(garden.getApplesFromDefinedPoint(x, y));
+                stepsRightDown.addLast(downwardStep);
+            }
 
-                result = numberOfApples;
-                backwardNumberOfApples = 0;
-                boolean goToTheLeft = false;
-                lines.add("Backward");
+            result = numberOfApples;
+            backwardNumberOfApples = 0;
+            boolean goToTheLeft = false;
+            logPathList.add("Backward");
 
-                while (x != 1 || y != 1) {
-                    DeikstraStep backwardStep = new DeikstraStep(x, y, numberOfApples - backwardNumberOfApples);                    
-                    backwardNumberOfApples = backwardNumberOfApples + garden.getApplesFromDefinedPoint(x, y);
-                    
-                    if (x == 1) {
-                        goToTheLeft = false;
-                    } else if (y == 1) {
+            while (x != 1 || y != 1) {
+                DeikstraStep backwardStep = new DeikstraStep(x, y, numberOfApples - backwardNumberOfApples);
+                backwardNumberOfApples = backwardNumberOfApples + garden.getApplesFromDefinedPoint(x, y);
+
+                if (x == 1) {
+                    goToTheLeft = false;
+                } else if (y == 1) {
+                    goToTheLeft = true;
+                } else {
+                    if (trees.get(y - 1).get(x - 2) > trees.get(y - 2).get(x - 1)) {
                         goToTheLeft = true;
                     } else {
-                        if (trees.get(y - 1).get(x - 2) > trees.get(y - 2).get(x - 1)) {
-                            goToTheLeft = true;
-                        } else {
-                            goToTheLeft = false;
-                        }
+                        goToTheLeft = false;
                     }
-                    if (!goToTheLeft && y > 0) {
-                        y--;
-                    } else if (x > 0) {
-                        x--;
-                    }
-                    lines.add(x + " " + y);
-                    backwardStep.setNextX(x);
-                    backwardStep.setNextY(y);
-                    backwardStep.setStepCost(garden.getApplesFromDefinedPoint(x, y));
-                    stepsLeftUp.addLast(backwardStep);                    
                 }
-                getMostValuedTail(stepsRightDown, stepsLeftUp);
+                if (!goToTheLeft && y > 0) {
+                    y--;
+                } else if (x > 0) {
+                    x--;
+                }
+                logPathList.add(x + " " + y);
+                backwardStep.setNextX(x);
+                backwardStep.setNextY(y);
+                backwardStep.setStepCost(garden.getApplesFromDefinedPoint(x, y));
+                stepsLeftUp.addLast(backwardStep);
             }
-            Files.write(path, lines);
-        } catch (IOException ex) {
-            Logger.getLogger(RandomHedgehog.class.getName()).log(Level.SEVERE, null, ex);
+            getMostValuedTail(stepsRightDown, stepsLeftUp);
         }
         return result;
     }

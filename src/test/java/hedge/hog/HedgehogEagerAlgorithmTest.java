@@ -27,8 +27,15 @@ public class HedgehogEagerAlgorithmTest {
             Garden garden = parser.parseTextFile("src/test/resources/input.txt");
             
             List<String> output = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
+            Path path = Paths.get("src/test/resources/logPath.txt");
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+            
             HedgehogEagerAlgorithm hog = new HedgehogEagerAlgorithm();
-            output.add("" + hog.go(garden, 1, 1, "src/test/resources/logPath.txt"));
+            output.add("" + hog.go(garden, 1, 1, lines));
+            
+            Files.write(path, lines);
             Files.write(resultPath, output);
             System.out.println("Eager Algorythm result:" + 
                     output.parallelStream().map((String r) -> {
@@ -56,8 +63,15 @@ public class HedgehogEagerAlgorithmTest {
             Garden garden = parser.parseTextFile("src/test/resources/inputFewApples.txt");
             
             List<String> output = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
+            Path path = Paths.get("src/test/resources/logPath_MANYAPPLES.txt");
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+            
             HedgehogEagerAlgorithm hog = new HedgehogEagerAlgorithm();
-            output.add("" + hog.go(garden, 1, 1, "src/test/resources/logPath_MANYAPPLES.txt"));
+            output.add("" + hog.go(garden, 1, 1, lines));
+            
+            Files.write(path, lines);
             Files.write(resultPath, output);
             System.out.println("Eager Algorythm_MANYAPPLES result:" + 
                     output.parallelStream().map((String r) -> {

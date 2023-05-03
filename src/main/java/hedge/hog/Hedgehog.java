@@ -1,6 +1,7 @@
 package hedge.hog;
 
 import hedge.entity.Garden;
+import java.util.List;
 
 public abstract class Hedgehog {
      /**
@@ -25,5 +26,5 @@ public abstract class Hedgehog {
         }
     }
     
-    public abstract int go(Garden garden, int startPointX, int startPointY, String logPathFileLocation);
+    public abstract int go(Garden garden, int startPointX, int startPointY, List<String> logPathList);
 }

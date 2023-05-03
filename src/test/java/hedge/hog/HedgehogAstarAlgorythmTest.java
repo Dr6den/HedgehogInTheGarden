@@ -27,8 +27,15 @@ public class HedgehogAstarAlgorythmTest {
             Garden garden = parser.parseTextFile("src/test/resources/input.txt");
             
             List<String> output = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
+            Path path = Paths.get("src/test/resources/logPathAstar.txt");
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+            
             HedgehogAstarAlgorythm hog = new HedgehogAstarAlgorythm();            
-            output.add("" + hog.go(garden, 1, 1,"src/test/resources/logPathAstar.txt"));
+            output.add("" + hog.go(garden, 1, 1, lines));
+            
+            Files.write(path, lines);
             Files.write(resultPath, output);
             System.out.println("A star Algorythm result:" + 
                     output.parallelStream().map((String r) -> {
@@ -56,8 +63,15 @@ public class HedgehogAstarAlgorythmTest {
             Garden garden = parser.parseTextFile("src/test/resources/inputFewApples.txt");
             
             List<String> output = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
+            Path path = Paths.get("src/test/resources/logPathAstar_MANYAPPLES.txt");
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+            
             HedgehogAstarAlgorythm hog = new HedgehogAstarAlgorythm();            
-            output.add("" + hog.go(garden, 1, 1,"src/test/resources/logPathAstar_MANYAPPLES.txt"));
+            output.add("" + hog.go(garden, 1, 1, lines));
+            
+            Files.write(path, lines);
             Files.write(resultPath, output);
             System.out.println("A star Algorythm result:" + 
                     output.parallelStream().map((String r) -> {
