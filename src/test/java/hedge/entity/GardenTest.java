@@ -1,21 +1,56 @@
 package hedge.entity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 
 /**
  *
  * @author andrew
  */
+@RunWith(Parameterized.class)
 public class GardenTest {
     List<List<Integer>> trees;
     Garden garden;
+    private int x;
+    private int y;
+    private int res;
+    enum Type {SUM_X, SUM_Y, GET_POINT};   
+    private Type type;
     
-    public GardenTest() {
+    public GardenTest(Type type, int x, int y, int res) {
+        this.x = x;
+        this.y = y;
+        this.res = res;
+        this.type = type;
+    }
+
+    @Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][]{
+            {Type.SUM_X, 5, 5, 5},
+            {Type.SUM_X, 1, 3, 15},
+            {Type.SUM_X, 4, 1, 17},
+            {Type.SUM_X, 1, 1, 18},
+            {Type.SUM_X, 4, 1, 17},
+            {Type.SUM_Y, 6, 5, 6},
+            {Type.SUM_Y, 4, 5, 15},
+            {Type.SUM_Y, 4, 1, 15},
+            {Type.SUM_Y, 1, 1, 21},
+            {Type.SUM_Y, 5, 1, 11},
+            {Type.GET_POINT, 6, 5, 6},
+            {Type.GET_POINT, 4, 5, 4},
+            {Type.GET_POINT, 1, 1, 1}
+        });
     }
     
     @Before
@@ -37,26 +72,19 @@ public class GardenTest {
     
     @Test
     public void sumOfAplesAcrossYlineTest() {
-        assertEquals(garden.sumOfAplesAcrossYline(5, 5), 5);
-        assertEquals(garden.sumOfAplesAcrossYline(1, 3), 15);
-        assertEquals(garden.sumOfAplesAcrossYline(4, 1), 17);
-        assertEquals(garden.sumOfAplesAcrossYline(1, 1), 18);
-        assertEquals(garden.sumOfAplesAcrossYline(4, 1), 17);
+        Assume.assumeTrue(type == Type.SUM_X);
+        assertEquals(garden.sumOfAplesAcrossYline(x, y), res);
     }
     
     @Test
     public void sumOfAplesAcrossXlineTest() {
-        assertEquals(garden.sumOfAplesAcrossXline(6, 5), 6);
-        assertEquals(garden.sumOfAplesAcrossXline(4, 5), 15);
-        assertEquals(garden.sumOfAplesAcrossXline(4, 1), 15);
-        assertEquals(garden.sumOfAplesAcrossXline(1, 1), 21);
-        assertEquals(garden.sumOfAplesAcrossXline(5, 1), 11);
+        Assume.assumeTrue(type == Type.SUM_Y);
+        assertEquals(garden.sumOfAplesAcrossXline(x, y), res);
     }
     
     @Test
     public void getApplesFromDefinedPointTest() {
-        assertEquals(garden.getApplesFromDefinedPoint(6, 5), 6);
-        assertEquals(garden.getApplesFromDefinedPoint(4, 5), 4);
-        assertEquals(garden.getApplesFromDefinedPoint(1, 1), 1);
+        Assume.assumeTrue(type == Type.GET_POINT);
+        assertEquals(garden.getApplesFromDefinedPoint(x, y), res);
     }
 }
