@@ -19,19 +19,21 @@ public class HedgehogAstarAlgorythmTest {
     @Test
     public void go() throws InconsistentTreeFileException {
         try {
-            Path resultPath = Paths.get("src/main/resources/outputWithCorrelation.txt");
+            Path resultPath = Paths.get("src/test/resources/outputWithCorrelation.txt");
             Files.deleteIfExists(resultPath);           
             Files.createFile(resultPath);
             
             TextFileParser parser = new TextFileParser();
-            Garden garden = parser.parseTextFile("src/main/resources/input.txt");
+            Garden garden = parser.parseTextFile("src/test/resources/input.txt");
             
             List<String> output = new ArrayList<>();
             HedgehogAstarAlgorythm hog = new HedgehogAstarAlgorythm();            
-            output.add("" + hog.go(garden, 1, 1,"src/main/resources/logPathAstar.txt"));
+            output.add("" + hog.go(garden, 1, 1,"src/test/resources/logPathAstar.txt"));
             Files.write(resultPath, output);
             System.out.println("A star Algorythm result:" + 
-                    output.parallelStream().map((String r) -> Integer.parseInt(r)).max(Integer::compare).get());
+                    output.parallelStream().map((String r) -> {
+                        return Integer.parseInt(r);
+                    }).max(Integer::compare).get());
             
             assertEquals(Integer.parseInt(output.get(0)), 128);
         } catch (IOException ex) {
@@ -46,19 +48,21 @@ public class HedgehogAstarAlgorythmTest {
     @Test
     public void goOnBigCell() throws InconsistentTreeFileException {
         try {
-            Path resultPath = Paths.get("src/main/resources/outputWithCorrelationMANYAPPLES.txt");
+            Path resultPath = Paths.get("src/test/resources/outputWithCorrelationMANYAPPLES.txt");
             Files.deleteIfExists(resultPath);           
             Files.createFile(resultPath);
             
             TextFileParser parser = new TextFileParser();
-            Garden garden = parser.parseTextFile("src/main/resources/inputFewApples.txt");
+            Garden garden = parser.parseTextFile("src/test/resources/inputFewApples.txt");
             
             List<String> output = new ArrayList<>();
             HedgehogAstarAlgorythm hog = new HedgehogAstarAlgorythm();            
-            output.add("" + hog.go(garden, 1, 1,"src/main/resources/logPathAstar_MANYAPPLES.txt"));
+            output.add("" + hog.go(garden, 1, 1,"src/test/resources/logPathAstar_MANYAPPLES.txt"));
             Files.write(resultPath, output);
             System.out.println("A star Algorythm result:" + 
-                    output.parallelStream().map((String r) -> Integer.parseInt(r)).max(Integer::compare).get());
+                    output.parallelStream().map((String r) -> {
+                        return Integer.parseInt(r);
+                    }).max(Integer::compare).get());
             
             assertEquals(Integer.parseInt(output.get(0)), 2235);
         } catch (IOException ex) {

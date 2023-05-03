@@ -19,19 +19,21 @@ public class HedgehogLooseCorellationTest {
     @Test
     public void goTroughTheMostPollutedByApplesWayWithLoseCalculation() throws InconsistentTreeFileException {
         try {
-            Path resultPath = Paths.get("src/main/resources/outputWithCorrelation.txt");
+            Path resultPath = Paths.get("src/test/resources/outputWithCorrelation.txt");
             Files.deleteIfExists(resultPath);           
             Files.createFile(resultPath);
             
             TextFileParser parser = new TextFileParser();
-            Garden garden = parser.parseTextFile("src/main/resources/input.txt");
+            Garden garden = parser.parseTextFile("src/test/resources/input.txt");
             
             List<String> output = new ArrayList<>();
             HedgehogLooseCorellationAlgorythm hog = new HedgehogLooseCorellationAlgorythm();            
-            output.add("" + hog.go(garden, 1, 1,"src/main/resources/logPathCorrelation.txt"));
+            output.add("" + hog.go(garden, 1, 1,"src/test/resources/logPathCorrelation.txt"));
             Files.write(resultPath, output);
             System.out.println("Loose Corellation Algorythm result:" + 
-                    output.parallelStream().map((String r) -> Integer.parseInt(r)).max(Integer::compare).get());
+                    output.parallelStream().map((String r) -> {
+                        return Integer.parseInt(r);
+                    }).max(Integer::compare).get());
             
             assertEquals(Integer.parseInt(output.get(0)), 44);
         } catch (IOException ex) {
@@ -46,19 +48,21 @@ public class HedgehogLooseCorellationTest {
     @Test
     public void goOnBigCell() throws InconsistentTreeFileException {
         try {
-            Path resultPath = Paths.get("src/main/resources/outputWithCorrelationMANYAPPLES.txt");
+            Path resultPath = Paths.get("src/test/resources/outputWithCorrelationMANYAPPLES.txt");
             Files.deleteIfExists(resultPath);           
             Files.createFile(resultPath);
             
             TextFileParser parser = new TextFileParser();
-            Garden garden = parser.parseTextFile("src/main/resources/inputFewApples.txt");
+            Garden garden = parser.parseTextFile("src/test/resources/inputFewApples.txt");
             
             List<String> output = new ArrayList<>();
             HedgehogLooseCorellationAlgorythm hog = new HedgehogLooseCorellationAlgorythm();            
-            output.add("" + hog.go(garden, 1, 1,"src/main/resources/logPathCorrelation_MANYAPPLES.txt"));
+            output.add("" + hog.go(garden, 1, 1,"src/test/resources/logPathCorrelation_MANYAPPLES.txt"));
             Files.write(resultPath, output);
             System.out.println("Loose Corellation Algorythm_MANYAPPLES result:" + 
-                    output.parallelStream().map((String r) -> Integer.parseInt(r)).max(Integer::compare).get());
+                    output.parallelStream().map((String r) -> {
+                        return Integer.parseInt(r);
+                    }).max(Integer::compare).get());
             
             assertEquals(Integer.parseInt(output.get(0)), 1840);
         } catch (IOException ex) {

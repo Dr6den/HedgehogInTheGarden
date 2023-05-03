@@ -3,6 +3,10 @@ package hedge.util;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * uses for generating of input files
+ * @author andrew
+ */
 public class InputFileRandomWriter {   
     public static List<String> fillGardenAreaWithRandomApples(List<String> lines,
             int maxX, int maxY, int maxNumApplesUnderTheTree) {

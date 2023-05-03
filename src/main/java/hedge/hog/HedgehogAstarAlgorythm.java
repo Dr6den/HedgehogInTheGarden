@@ -79,24 +79,32 @@ public class HedgehogAstarAlgorythm extends Hedgehog {
     }
     
     public int probabilityLoseApplesAfterDefinedStepsRight(int x, int y, int borderX, List<List<Integer>> trees) {        
-        List<List<Integer>> sublist = trees.stream().skip(y - 1).map((List<Integer> l) -> l.subList(x, borderX))
-                .collect(Collectors.toList());
+        List<List<Integer>> sublist = trees.stream().skip(y - 1).map((List<Integer> l) -> {
+                    return l.subList(x, borderX);
+                }).collect(Collectors.toList());
         
         return IntStream.range(0, sublist.get(0).size())
-                .mapToObj(i -> sublist.stream().mapToInt(l -> l.get(i))
-                .sum()).collect(Collectors.toList())
+                .mapToObj(i -> {
+                    return sublist.stream().mapToInt(l -> {
+                        return l.get(i);
+                    }).sum();
+                }).collect(Collectors.toList())
                 .stream().reduce(0, Integer::sum);
     }
     
     public int probabilityLoseApplesAfterDefinedStepsDown(int x, int y, int borderY, List<List<Integer>> trees) {
-        List<List<Integer>> sublist = trees.stream().skip(y).map((List<Integer> l) -> l.subList(x - 1, l.size()))
-                .collect(Collectors.toList());
+        List<List<Integer>> sublist = trees.stream().skip(y).map((List<Integer> l) -> {
+                return l.subList(x - 1, l.size());
+            }).collect(Collectors.toList());
         
         if(sublist.size() == 0) return 0;
         
         return IntStream.range(0, sublist.get(0).size())
-                .mapToObj(i -> sublist.stream().mapToInt(l -> l.get(i))
-                .sum()).collect(Collectors.toList())
+                .mapToObj(i -> {
+                    return sublist.stream().mapToInt(l -> {
+                        return l.get(i);
+                    }).sum();
+                }).collect(Collectors.toList())
                 .stream().reduce(0, Integer::sum);
     }
 }

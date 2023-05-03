@@ -64,21 +64,29 @@ public class HedgehogLooseCorellationAlgorythm extends Hedgehog {
             return 0;
         }
         
-        List<List<Integer>> sublist = trees.stream().skip(y - 1).map((List<Integer> l) -> l.subList(x - 1, borderX))
-                .collect(Collectors.toList());
+        List<List<Integer>> sublist = trees.stream().skip(y - 1).map((List<Integer> l) -> {
+            return l.subList(x - 1, borderX);
+        }).collect(Collectors.toList());
         
         List<List<Integer>> sublistWithStepAdded = trees.stream().skip(y - 1)
-                .map((List<Integer> l) -> l.subList(x + steps - 1, borderX))
-                .collect(Collectors.toList());
+                .map((List<Integer> l) -> {
+                    return l.subList(x + steps - 1, borderX);
+                }).collect(Collectors.toList());
         
         int currentSum = IntStream.range(0, sublist.get(0).size())
-                .mapToObj(i -> sublist.stream().mapToInt(l -> l.get(i))
-                .sum()).collect(Collectors.toList())
+                .mapToObj(i -> {
+                    return sublist.stream().mapToInt(l -> {
+                        return l.get(i);
+                    }).sum();
+                }).collect(Collectors.toList())
                 .stream().reduce(0, Integer::sum);
         
         int sumAfterStepsToTheRight = IntStream.range(0, sublistWithStepAdded.get(0).size())
-                .mapToObj(i -> sublistWithStepAdded.stream().mapToInt(l -> l.get(i))
-                .sum()).collect(Collectors.toList())
+                .mapToObj(i -> {
+                    return sublistWithStepAdded.stream().mapToInt(l -> {
+                        return l.get(i);
+                    }).sum();
+                }).collect(Collectors.toList())
                 .stream().reduce(0, Integer::sum);
         return currentSum - sumAfterStepsToTheRight;
     }
@@ -96,21 +104,30 @@ public class HedgehogLooseCorellationAlgorythm extends Hedgehog {
         }
         
         List<List<Integer>> sublist = trees.stream().skip(y - 1).limit(borderY)
-                .map((List<Integer> l) -> l.subList(x - 1, l.size()))
-                .collect(Collectors.toList());
+                .map((List<Integer> l) -> {
+                    return l.subList(x - 1, l.size());
+                }).collect(Collectors.toList());
         
         List<List<Integer>> sublistWithStepAdded = trees.stream().skip(y + steps - 1)
-                .map((List<Integer> l) -> l.subList(x - 1, l.size()))
+                .map((List<Integer> l) -> { 
+                    return l.subList(x - 1, l.size());
+                })
                 .collect(Collectors.toList());
         
         int currentSum = IntStream.range(0, sublist.get(0).size())
-                .mapToObj(i -> sublist.stream().mapToInt(l -> l.get(i))
-                .sum()).collect(Collectors.toList())
+                .mapToObj(i -> {
+                    return sublist.stream().mapToInt(l -> {
+                        return l.get(i);
+                    }).sum();
+                }).collect(Collectors.toList())
                 .stream().reduce(0, Integer::sum);
         
         int sumAfterStepsToTheRight = IntStream.range(0, sublistWithStepAdded.get(0).size())
-                .mapToObj(i -> sublistWithStepAdded.stream().mapToInt(l -> l.get(i))
-                .sum()).collect(Collectors.toList())
+                .mapToObj(i -> {
+                    return sublistWithStepAdded.stream().mapToInt(l -> {
+                        return l.get(i);
+                    }).sum();
+                }).collect(Collectors.toList())
                 .stream().reduce(0, Integer::sum);
         return currentSum - sumAfterStepsToTheRight;
     }

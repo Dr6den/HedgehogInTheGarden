@@ -2,7 +2,6 @@ package hedge.entity;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  *
@@ -38,7 +37,9 @@ public class Garden {
     }
     
     public int sumOfAplesAcrossYline(int x, int startYPoint) {
-        return this.trees.stream().skip(startYPoint - 1).collect(Collectors.summingInt((List<Integer> l) -> l.get(x - 1)));
+        return this.trees.stream().skip(startYPoint - 1).collect(Collectors.summingInt((List<Integer> l) -> {
+            return l.get(x - 1);
+        }));
     }
     
     public int sumOfAplesAcrossXline(int startXPoint, int y) {
@@ -46,6 +47,6 @@ public class Garden {
     }
     
     public int getApplesFromDefinedPoint(int x, int y) {
-        return this.trees.get(y - 1).get( x - 1);
+        return this.trees.get(y - 1).get(x - 1);
     }
 }

@@ -23,12 +23,12 @@ public class RandomHedgehogTest {
     @Test
     public void randomWayTest() throws InconsistentTreeFileException {
         try {
-            Path resultPath = Paths.get("src/main/resources/outputRandom.txt");
+            Path resultPath = Paths.get("src/test/resources/outputRandom.txt");
             Files.deleteIfExists(resultPath);           
             Files.createFile(resultPath);
             
             TextFileParser parser = new TextFileParser();
-            Garden garden = parser.parseTextFile("src/main/resources/input.txt");
+            Garden garden = parser.parseTextFile("src/test/resources/input.txt");
             
             List<String> output = new ArrayList<>();
             RandomHedgehog hog = new RandomHedgehog();
@@ -37,7 +37,9 @@ public class RandomHedgehogTest {
             //}
             Files.write(resultPath, output);
             System.out.println("randomWayTest Result:" +
-                    output.parallelStream().map((String r) -> Integer.parseInt(r)).max(Integer::compare).get());
+                    output.parallelStream().map((String r) -> {
+                        return Integer.parseInt(r);
+                    }).max(Integer::compare).get());
         } catch (IOException ex) {
             Logger.getLogger(RandomHedgehogTest.class.getName()).log(Level.SEVERE, null, ex);
         }

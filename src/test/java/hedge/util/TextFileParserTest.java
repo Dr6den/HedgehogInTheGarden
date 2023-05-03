@@ -31,7 +31,7 @@ public class TextFileParserTest {
     @Test
     public void parseCorrectTextFileTest() throws IOException, InconsistentTreeFileException {
         TextFileParser parser = new TextFileParser();
-        Garden garden = parser.parseTextFile("src/main/resources/fileparser/correct.txt");
+        Garden garden = parser.parseTextFile("src/test/resources/fileparser/correct.txt");
         
         assertNotNull(garden);
         assertEquals(garden.getxTerritoryMetres(), 7);
@@ -61,24 +61,24 @@ public class TextFileParserTest {
     @Test(expected = InconsistentTreeFileException.class)
     public void parseWrongCellNumbersTextFileTest() throws IOException, InconsistentTreeFileException {
         TextFileParser parser = new TextFileParser();
-        parser.parseTextFile("src/main/resources/fileparser/wrongCellNumbers.txt");
+        parser.parseTextFile("src/test/resources/fileparser/wrongCellNumbers.txt");
     }
     
     @Test(expected = InconsistentTreeFileException.class)
     public void parseWrongColumnNumbersTextFileTest() throws IOException, InconsistentTreeFileException {
         TextFileParser parser = new TextFileParser();
-        parser.parseTextFile("src/main/resources/fileparser/wrongColumnNumbers.txt");
+        parser.parseTextFile("src/test/resources/fileparser/wrongColumnNumbers.txt");
     }
     
     @Test(expected = InconsistentTreeFileException.class)
     public void parseHeaderAndCellIncoinsidenessTest() throws IOException, InconsistentTreeFileException {
         TextFileParser parser = new TextFileParser();
-        parser.parseTextFile("src/main/resources/fileparser/headerAndCellInconsideness.txt");
+        parser.parseTextFile("src/test/resources/fileparser/headerAndCellInconsideness.txt");
     }
     
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void parseWrongHeaderTextFileTest() throws IOException, InconsistentTreeFileException {
         TextFileParser parser = new TextFileParser();
-        parser.parseTextFile("src/main/resources/fileparser/wrongHeader.txt");
+        parser.parseTextFile("src/test/resources/fileparser/wrongHeader.txt");
     }
 }

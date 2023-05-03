@@ -19,11 +19,11 @@ public class FillInInputTestWithFewApplesTest {
     private final int xSizeOfField = 150;
     private final int ySizeOfField = 100;
     
-    @Test
+    //@Test
     public void inputTest() {
         List<String> lines = new ArrayList<>();
         try {
-            Path currentRelativePath = Paths.get("src/main/resources/inputFewApples.txt");
+            Path currentRelativePath = Paths.get("src/test/resources/inputFewApples.txt");
             Files.deleteIfExists(currentRelativePath);           
             Files.createFile(currentRelativePath);
             lines = InputFileRandomWriter.fillGardenAreaWithRandomApples(lines, xSizeOfField, ySizeOfField, 30);
